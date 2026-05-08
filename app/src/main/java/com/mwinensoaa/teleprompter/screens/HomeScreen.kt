@@ -1,8 +1,10 @@
 package com.mwinensoaa.teleprompter.screens
 
+import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -23,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -60,6 +63,11 @@ fun HomeScreen(
 
     LaunchedEffect(Unit) {
         showContent = true
+    }
+
+    val context = LocalContext.current
+    BackHandler {
+        (context as Activity).finish()
     }
 
     val launcher = rememberLauncherForActivityResult(

@@ -19,8 +19,19 @@ fun Navigation() {
     NavHost(
         navController = navController,
 
-        startDestination = "home"
+        startDestination = "permission"
     ) {
+
+        composable("permission") {
+
+            PermissionScreen(
+                onPermissionGranted = {
+                    navController.navigate(
+                        "home"
+                    )
+                }
+            )
+        }
 
         /*
          * HOME SCREEN
