@@ -351,6 +351,7 @@ fun HomeScreen(
                                     arrayOf(
                                         "text/plain",
                                         "application/pdf",
+                                        "text/x-markdown",
                                         "application/msword",
                                         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                     )
@@ -425,35 +426,37 @@ fun HomeScreen(
  * Extract text from TXT or PDF
  */
 fun extractTextFromFile(
-context: Context,
-uri: Uri,
-onResult: (String) -> Unit
+    context: Context,
+    uri: Uri,
+    onResult: (String) -> Unit
 ) {
 
     CoroutineScope(Dispatchers.IO).launch {
 
-        PDFBoxResourceLoader.init(context)
-
-        val contentResolver =
-            context.contentResolver
-
-        val mimeType =
-            contentResolver.getType(uri)
-
         try {
+
+            PDFBoxResourceLoader.init(context)
+
+            val contentResolver =
+                context.contentResolver
+
+            val mimeType =
+                contentResolver.getType(uri)
 
             val extractedText = when {
 
                 /*
-                 * TXT FILE
+                 * TXT + MARKDOWN FILES
                  */
-                mimeType == "text/plain" -> {
+                mimeType == "text/plain" ||
+                        mimeType == "text/markdown" ||
+                        mimeType == "text/x-markdown" -> {
 
                     val inputStream =
                         contentResolver.openInputStream(uri)
 
                     inputStream
-                        ?.bufferedReader()
+                        ?.bufferedReader(Charsets.UTF_8)
                         ?.use { it.readText() }
                         ?: ""
                 }
@@ -467,41 +470,63 @@ onResult: (String) -> Unit
                     val inputStream =
                         contentResolver.openInputStream(uri)
 
-                    val document =
-                        XWPFDocument(inputStream)
+                    if (inputStream == null) {
 
-                    val text = buildString {
+                        "Unable to open DOCX file"
 
-                        // Paragraphs
-                        document.paragraphs.forEach {
+                    } else {
 
-                            append(it.text)
-                            append("\n\n")
-                        }
+                        val document =
+                            XWPFDocument(inputStream)
 
-                        // Tables
-                        document.tables.forEach { table ->
+                        val text = buildString {
 
-                            append("\n")
+                            /*
+                             * PARAGRAPHS
+                             */
 
-                            table.rows.forEach { row ->
+                            document.paragraphs.forEach { paragraph ->
 
-                                row.tableCells.forEach { cell ->
+                                val line =
+                                    paragraph.text.trim()
 
-                                    append(cell.text)
-                                    append("    ")
+                                if (line.isNotEmpty()) {
+
+                                    append(line)
+                                    append("\n\n")
+                                }
+                            }
+
+                            /*
+                             * TABLES
+                             */
+
+                            document.tables.forEach { table ->
+
+                                append("\n")
+
+                                table.rows.forEach { row ->
+
+                                    row.tableCells.forEach { cell ->
+
+                                        append(
+                                            cell.text.trim()
+                                        )
+
+                                        append("    ")
+                                    }
+
+                                    append("\n")
                                 }
 
                                 append("\n")
                             }
-
-                            append("\n")
                         }
+
+                        document.close()
+
+                        text
                     }
-
-                    document.close()
-
-                    text
                 }
 
                 /*
@@ -512,19 +537,26 @@ onResult: (String) -> Unit
                     val inputStream =
                         contentResolver.openInputStream(uri)
 
-                    val document =
-                        HWPFDocument(inputStream)
+                    if (inputStream == null) {
 
-                    val extractor =
-                        WordExtractor(document)
+                        "Unable to open DOC file"
 
-                    val text =
-                        extractor.text
+                    } else {
 
-                    extractor.close()
-                    document.close()
+                        val document =
+                            HWPFDocument(inputStream)
 
-                    text
+                        val extractor =
+                            WordExtractor(document)
+
+                        val text =
+                            extractor.text
+
+                        extractor.close()
+                        document.close()
+
+                        text
+                    }
                 }
 
                 /*
@@ -535,18 +567,27 @@ onResult: (String) -> Unit
                     val inputStream =
                         contentResolver.openInputStream(uri)
 
-                    val document =
-                        PDDocument.load(inputStream)
+                    if (inputStream == null) {
 
-                    val stripper =
-                        PDFTextStripper()
+                        "Unable to open PDF file"
 
-                    val text =
-                        stripper.getText(document)
+                    } else {
 
-                    document.close()
+                        val document =
+                            PDDocument.load(inputStream)
 
-                    text
+                        val stripper =
+                            PDFTextStripper()
+
+                        stripper.sortByPosition = true
+
+                        val text =
+                            stripper.getText(document)
+
+                        document.close()
+
+                        text
+                    }
                 }
 
                 /*
@@ -559,11 +600,19 @@ onResult: (String) -> Unit
             }
 
             /*
-             * RETURN RESULT ON UI THREAD
+             * CLEAN EXTRACTED TEXT
              */
+
+            val cleanedText =
+                cleanExtractedText(extractedText)
+
+            /*
+             * RETURN ON UI THREAD
+             */
+
             withContext(Dispatchers.Main) {
 
-                onResult(extractedText)
+                onResult(cleanedText)
             }
 
         } catch (e: Exception) {
@@ -573,11 +622,34 @@ onResult: (String) -> Unit
             withContext(Dispatchers.Main) {
 
                 onResult(
-                    "Error reading file: ${e.message}"
+                    cleanExtractedText(
+                        "Error reading file: ${e.message}"
+                    )
                 )
             }
         }
     }
+}
+
+
+fun cleanExtractedText(text: String): String {
+
+    return text
+
+        .replace("�", "")
+        .replace("\u0000", "")
+        .replace("\r", "")
+
+        // Remove invisible unicode controls
+        .replace(Regex("[\\p{Cf}\\p{Cc}]"), "")
+
+        // Remove excessive spaces
+        .replace(Regex("[ ]{2,}"), " ")
+
+        // Normalize new lines
+        .replace(Regex("\\n{3,}"), "\n\n")
+
+        .trim()
 }
 
 /**

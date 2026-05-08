@@ -186,7 +186,7 @@ fun PermissionScreen(
 
                 Text(
                     text =
-                        "Allow access to your files so you can import TXT, PDF and Word documents into the teleprompter.",
+                        "Allow access to your files so you can import TXT, PDF and Word documents into the Promptify.",
 
                     style =
                         MaterialTheme.typography.bodyLarge,
