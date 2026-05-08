@@ -612,7 +612,7 @@ fun extractTextFromFile(
 
             withContext(Dispatchers.Main) {
 
-                onResult(cleanedText)
+                onResult(formatParagraphs(cleanedText))
             }
 
         } catch (e: Exception) {
@@ -629,6 +629,27 @@ fun extractTextFromFile(
             }
         }
     }
+}
+
+fun formatParagraphs(text: String): String {
+
+    return text
+
+        // Normalize line breaks
+        .replace("\r", "")
+
+        // Split large text blocks into paragraphs
+        .replace(Regex("\\n{2,}"), "\n\n")
+
+        // Remove excessive spaces
+        .replace(Regex("[ ]{2,}"), " ")
+
+        // Add spacing after sentence endings
+        .replace(". ", ".\n\n")
+        .replace("? ", "?\n\n")
+        .replace("! ", "!\n\n")
+
+        .trim()
 }
 
 
