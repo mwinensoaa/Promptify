@@ -789,7 +789,7 @@ fun extractTextFromFile(
                                             }
 
                                         append(TABLE_END)
-                                        append("\n\n")
+                                        append("\n")
                                     }
                                 }
                             }
