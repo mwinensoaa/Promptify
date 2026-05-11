@@ -1,4 +1,4 @@
-package com.mwinensoaa.teleprompter.screens
+package com.mwinensoaa.promptify.screens
 
 import android.app.Activity
 import android.view.WindowManager
@@ -174,6 +174,8 @@ fun PromptScreen(
         /*
          * PROMPT TEXT
          */
+
+
 
         Text(
             text = extractedText,
@@ -406,3 +408,6 @@ fun PromptScreen(
         }
     }
 }
+
+
+

@@ -1,4 +1,4 @@
-package com.mwinensoaa.teleprompter.screens
+package com.mwinensoaa.promptify.screens
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -37,7 +37,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavController
 
 @Composable
 fun PermissionScreen(
@@ -55,9 +54,7 @@ fun PermissionScreen(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
 
             Manifest.permission.READ_MEDIA_IMAGES
-
         } else {
-
             Manifest.permission.READ_EXTERNAL_STORAGE
         }
     }
@@ -90,7 +87,6 @@ fun PermissionScreen(
         ) { granted ->
 
             if (granted) {
-
                 onPermissionGranted()
             }
         }
@@ -201,31 +197,25 @@ fun PermissionScreen(
                 /*
                  * BUTTON
                  */
-
                 Button(
                     onClick = {
-
                         permissionLauncher.launch(
                             storagePermission
                         )
                     },
-
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(58.dp),
 
                     shape = RoundedCornerShape(18.dp),
-
                     colors =
                         ButtonDefaults.buttonColors(
                             containerColor =
                                 Color(0xFF2563EB)
                         )
                 ) {
-
                     Text(
                         text = "Grant Permission",
-
                         fontSize = 17.sp
                     )
                 }

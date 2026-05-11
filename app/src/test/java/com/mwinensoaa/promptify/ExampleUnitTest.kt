@@ -1,4 +1,4 @@
-package com.mwinensoaa.teleprompter
+package com.mwinensoaa.promptify
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.mwinensoaa.teleprompter.ui.theme
+package com.mwinensoaa.promptify.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,4 +1,4 @@
-package com.mwinensoaa.teleprompter.screens
+package com.mwinensoaa.promptify.screens
 
 
 
@@ -39,7 +39,6 @@ fun Navigation() {
         composable("home") {
 
             HomeScreen(
-                context = navController.context
             ) { extractedText ->
 
                 // Encode text for navigation
