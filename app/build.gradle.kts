@@ -12,10 +12,10 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.mwinensoaa.teleprompter"
+        applicationId = "com.mwinensoaa.promptify"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
+        versionCode = 2 //current version in production
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -23,8 +23,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -37,6 +37,10 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
 }
 
@@ -67,7 +71,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.activity.compose)
 
-    implementation(libs.poi)
     implementation(libs.poi.ooxml)
     implementation(libs.poi.scratchpad.v525)
 

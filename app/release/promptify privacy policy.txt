@@ -1,0 +1,66 @@
+Privacy Policy for Promptify
+
+Effective Date: May 12, 2026
+
+Welcome to Promptify. Your privacy is important to us. This Privacy Policy explains how Promptify collects, uses, and protects information when you use the application.
+
+1. Information We Collect
+
+Promptify may collect limited information necessary for the proper functioning of the app, including:
+
+Files selected by the user for processing or reading
+App usage information and crash reports
+Device information such as Android version and device model
+User preferences and settings stored locally on the device
+
+Promptify does not intentionally collect sensitive personal information unless explicitly provided by the user.
+
+2. File Access and Permissions
+
+Promptify may request access to:
+
+Storage or file access permissions
+Media or document permissions
+
+These permissions are used solely to:
+
+Open and process user-selected files
+Save exported or generated content
+Improve user experience within the app
+
+Files accessed by Promptify are processed locally on the device unless otherwise stated.
+
+3. Data Storage
+
+Most data generated or processed by Promptify is stored locally on your device.
+
+We do not sell, rent, or share your personal information with third parties.
+
+4. Third-Party Services
+
+Promptify may use trusted third-party services such as:
+
+Google Play Services
+Firebase Analytics or Crash Reporting (if enabled)
+
+These services may collect anonymous technical information to improve app stability and performance.
+
+You can learn more about their privacy practices at:
+
+Google Privacy Policy
+Firebase Privacy and Security
+5. Data Security
+
+We take reasonable measures to protect user information from unauthorized access, alteration, or disclosure. However, no method of electronic storage or transmission is completely secure.
+
+6. Children’s Privacy
+
+Promptify is not directed toward children under the age of 13. We do not knowingly collect personal information from children.
+
+7. Changes to This Privacy Policy
+
+We may update this Privacy Policy from time to time. Changes will be posted within the app or through updated policy documentation.
+
+8. Contact Information
+
+If you have questions or concerns about this Privacy Policy, please contact:
